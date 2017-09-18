@@ -1,7 +1,11 @@
-﻿namespace Top5GamesSteamNews.Domain.Interfaces
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Top5GamesSteamNews.Domain.Entities;
+
+namespace Top5GamesSteamNews.Domain.Interfaces
 {
     public interface INewsService
     {
-        object GetTopFive();
+        Task<IEnumerable<SteamNews>> Get(int howManyArticles, int howManyGames);
     }
 }

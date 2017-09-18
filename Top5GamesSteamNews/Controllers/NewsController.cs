@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Top5GamesSteamNews.Domain.Interfaces;
 
 namespace Top5GamesSteamNews.Controllers
@@ -14,7 +15,7 @@ namespace Top5GamesSteamNews.Controllers
 
         public IActionResult Index()
         {
-            var news = _newsService.GetTopFive();
+            ViewData["news"] = _newsService.Get(1, 5).Result;
 
             return View();
         }

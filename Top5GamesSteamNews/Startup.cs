@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Top5GamesSteamNews.Application.Services;
 using Top5GamesSteamNews.Domain.Entities.Steam;
+using Top5GamesSteamNews.Domain.Interfaces;
 
 namespace Top5GamesSteamNews
 {
@@ -32,6 +34,10 @@ namespace Top5GamesSteamNews
 
             // Add framework services.
             services.AddMvc();
+
+            services.AddTransient<IGamesServices, SteamGamesService>();
+            services.AddTransient<INewsService, SteamNewsService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
