@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Top5GamesSteamNews.Domain.Entities.Steam;
 
 namespace Top5GamesSteamNews
 {
@@ -16,7 +13,7 @@ namespace Top5GamesSteamNews
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -27,6 +24,12 @@ namespace Top5GamesSteamNews
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adds services required for using options.
+            services.AddOptions();
+
+            // Register the IConfiguration instance which SteamEndpoints binds against.
+            services.Configure<Endpoints>(Configuration.GetSection("SteamEndpoints"));
+
             // Add framework services.
             services.AddMvc();
         }
@@ -53,7 +56,7 @@ namespace Top5GamesSteamNews
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=News}/{action=Index}/{id?}");
             });
         }
     }
