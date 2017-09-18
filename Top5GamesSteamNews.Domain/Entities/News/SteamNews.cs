@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Top5GamesSteamNews.Domain.Entities
+namespace Top5GamesSteamNews.Domain.Entities.News
 {
     public class Newsitem
     {

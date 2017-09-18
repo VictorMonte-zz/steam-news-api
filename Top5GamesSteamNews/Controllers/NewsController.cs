@@ -15,7 +15,7 @@ namespace Top5GamesSteamNews.Controllers
 
         public IActionResult Index()
         {
-            ViewData["news"] = _newsService.Get(1, 5).Result;
+            ViewBag.News = _newsService.Get(1, 5).Result;
 
             return View();
         }

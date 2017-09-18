@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Top5GamesSteamNews.Domain.Entities;
+using Top5GamesSteamNews.Domain.Entities.News;
 using Top5GamesSteamNews.Domain.Entities.Steam;
 using Top5GamesSteamNews.Domain.Interfaces;
 
