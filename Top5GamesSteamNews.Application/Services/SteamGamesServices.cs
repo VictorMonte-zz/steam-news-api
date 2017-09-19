@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using Top5GamesSteamNews.Domain.Entities.Steam;
+using Top5GamesSteamNews.Domain.Entities.Configuration;
 using Top5GamesSteamNews.Domain.Interfaces;
+using System;
+using Top5GamesSteamNews.Domain.Entities;
+using Top5GamesSteamNews.Application.DTO.Spy;
+using System.Linq;
 
 namespace Top5GamesSteamNews.Application.Services
 {
@@ -21,28 +22,36 @@ namespace Top5GamesSteamNews.Application.Services
             _endpoints = endpoints.Value;
         }
 
-        public async Task<IEnumerable<string>> GetGamesIds(int range)
+        public async Task<IEnumerable<Game>> Get(int howManyGames)
         {
-            return await Task.Run<IEnumerable<string>>(() =>
-             {
-                 List<string> ids = new List<string>();
+            return await Task.Run<IEnumerable<Game>>(() =>
+            {
+                List<Game> games = new List<Game>();
 
-                 using (var client = new HttpClient())
-                 {
-                     client.DefaultRequestHeaders.Accept.Clear();
-                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                     HttpResponseMessage response = client.GetAsync(_endpoints.Top100Games).Result;
-                     response.EnsureSuccessStatusCode();
+                    HttpResponseMessage response = client.GetAsync(_endpoints.Top100Games).Result;
+                    response.EnsureSuccessStatusCode();
 
-                     string conteudo = response.Content.ReadAsStringAsync().Result;
-                     var games = JsonConvert.DeserializeObject<Dictionary<string, Game>>(conteudo);
+                    string conteudo = response.Content.ReadAsStringAsync().Result;
+                    var spyGames = JsonConvert.DeserializeObject<Dictionary<string, GameDto>>(conteudo);
 
-                     ids = games.Keys.Take(range).ToList();
-                 }
+                    foreach (var game in spyGames.Take(howManyGames))
+                    {
+                        games.Add(
+                            new Game()
+                            {
+                                Id = game.Key,
+                                Name = game.Value.Name
+                            });
+                    }
+                }
 
-                 return ids;
-             });
+                return games;
+            });
         }
     }
 }

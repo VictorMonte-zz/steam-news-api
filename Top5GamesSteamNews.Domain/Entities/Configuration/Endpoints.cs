@@ -1,4 +1,4 @@
-﻿namespace Top5GamesSteamNews.Domain.Entities.Steam
+﻿namespace Top5GamesSteamNews.Domain.Entities.Configuration
 {
     public class Endpoints
     {

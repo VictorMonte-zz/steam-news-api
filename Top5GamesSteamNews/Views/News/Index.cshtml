@@ -3,23 +3,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Steam News</h2>
+<h2>Steam</h2>
 <h3>Top Five News from Best Games</h3>
 
 @foreach (var news in ViewBag.News)
 {
     <div class="container">
         <div class="page-header">
-            <h1>@news.Appnews.Appid</h1>
+            <h1>@news.Game.Name</h1>
         </div>
-        @foreach (var article in news.Appnews.Newsitems)
+        @foreach (var article in news.Articles)
         {
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">@article.Title</h3>
                 </div>
                 <div class="panel-body">
-                    @Html.Raw(article.Contents)
+                    @Html.Raw(article.Content)
                 </div>
             </div>
         }

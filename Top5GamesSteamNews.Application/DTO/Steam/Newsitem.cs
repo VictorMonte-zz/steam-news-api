@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Top5GamesSteamNews.Domain.Entities.News
+﻿namespace Top5GamesSteamNews.Application.DTO.Steam
 {
     public class Newsitem
     {
@@ -15,17 +13,5 @@ namespace Top5GamesSteamNews.Domain.Entities.News
         public string Feedname { get; set; }
         public int Feed_type { get; set; }
         public int Appid { get; set; }
-    }
-
-    public class Appnews
-    {
-        public int Appid { get; set; }
-        public List<Newsitem> Newsitems { get; set; }
-        public int Count { get; set; }
-    }
-
-    public class SteamNews
-    {
-        public Appnews Appnews { get; set; }
     }
 }

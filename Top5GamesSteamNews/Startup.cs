@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Top5GamesSteamNews.Application.Services;
-using Top5GamesSteamNews.Domain.Entities.Steam;
+using Top5GamesSteamNews.Domain.Entities.Configuration;
 using Top5GamesSteamNews.Domain.Interfaces;
 
 namespace Top5GamesSteamNews

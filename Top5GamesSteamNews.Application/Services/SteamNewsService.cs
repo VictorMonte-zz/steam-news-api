@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Top5GamesSteamNews.Application.DTO.Steam;
 using Top5GamesSteamNews.Domain.Entities;
-using Top5GamesSteamNews.Domain.Entities.News;
-using Top5GamesSteamNews.Domain.Entities.Steam;
+using Top5GamesSteamNews.Domain.Entities.Configuration;
 using Top5GamesSteamNews.Domain.Interfaces;
+using Top5GamesSteamNews.Application.Adapters;
 
 namespace Top5GamesSteamNews.Application.Services
 {
@@ -24,33 +23,29 @@ namespace Top5GamesSteamNews.Application.Services
             _gamesServices = gamesService;
         }
 
-        public async Task<IEnumerable<SteamNews>> Get(int howManyArticles, int howManyGames)
+        public async Task<IEnumerable<News>> Get(int howManyArticles, int howManyGames)
         {
-            return await Task.Run<IEnumerable<SteamNews>>(() =>
+            return await Task.Run<IEnumerable<News>>(async () =>
              {
-                 var news = new List<SteamNews>();
+                 var list = new List<News>();
 
-                 _gamesServices.GetGamesIds(howManyGames)
-                     .Result
-                     .ToList()
-                     .ForEach(id =>
-                     {
-                         var articles = GetArticlesFromGame(id, howManyArticles);
-                         if (articles != null)
-                         {
-                             news.Add(articles);
-                         }
-                     });
+                 var games = await _gamesServices.Get(howManyGames);
 
-                 return news;
+                 foreach (var game in games)
+                 {
+                     var news = GetNewsForGame(game, howManyArticles);                     
+                     list.Add(news);
+                 }
+
+                 return list;
              });
         }
 
-        private SteamNews GetArticlesFromGame(string id, int howManyArticles)
+        private News GetNewsForGame(Game game, int howManyArticles)
         {
             using (var client = new HttpClient())
             {
-                var url = string.Format(_endpoints.NewsByAppId, id, howManyArticles);
+                var url = string.Format(_endpoints.NewsByAppId, game.Id, howManyArticles);
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -59,9 +54,9 @@ namespace Top5GamesSteamNews.Application.Services
                 response.EnsureSuccessStatusCode();
 
                 string result = response.Content.ReadAsStringAsync().Result;
-                var articles = JsonConvert.DeserializeObject<SteamNews>(result);
+                var steamNews = JsonConvert.DeserializeObject<SteamNews>(result);
 
-                return articles;
+                return steamNews.ToNews(game);
             }
         }
     }

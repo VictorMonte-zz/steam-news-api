@@ -1,6 +1,6 @@
-﻿namespace Top5GamesSteamNews.Domain.Entities.Steam
+﻿namespace Top5GamesSteamNews.Application.DTO.Spy
 {
-    public class Game
+    public class GameDto
     {
         public int? Appid { get; set; }
         public string Name { get; set; }

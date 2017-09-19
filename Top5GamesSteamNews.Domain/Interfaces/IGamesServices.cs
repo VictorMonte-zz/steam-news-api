@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Top5GamesSteamNews.Domain.Entities;
 
 namespace Top5GamesSteamNews.Domain.Interfaces
 {
     public interface IGamesServices
     {
-        Task<IEnumerable<string>> GetGamesIds(int range);
+        Task<IEnumerable<Game>> Get(int howManyGames);
     }
 }
