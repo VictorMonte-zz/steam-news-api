@@ -22,36 +22,33 @@ namespace Top5GamesSteamNews.Application.Services
             _endpoints = endpoints.Value;
         }
 
-        public async Task<IEnumerable<Game>> Get(int howManyGames)
+        public IEnumerable<Game> Get(int howManyGames)
         {
-            return await Task.Run<IEnumerable<Game>>(() =>
+            List<Game> games = new List<Game>();
+
+            using (var client = new HttpClient())
             {
-                List<Game> games = new List<Game>();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                using (var client = new HttpClient())
+                HttpResponseMessage response = client.GetAsync(_endpoints.Top100Games).Result;
+                response.EnsureSuccessStatusCode();
+
+                string conteudo = response.Content.ReadAsStringAsync().Result;
+                var spyGames = JsonConvert.DeserializeObject<Dictionary<string, GameDto>>(conteudo);
+
+                foreach (var game in spyGames.Take(howManyGames))
                 {
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    HttpResponseMessage response = client.GetAsync(_endpoints.Top100Games).Result;
-                    response.EnsureSuccessStatusCode();
-
-                    string conteudo = response.Content.ReadAsStringAsync().Result;
-                    var spyGames = JsonConvert.DeserializeObject<Dictionary<string, GameDto>>(conteudo);
-
-                    foreach (var game in spyGames.Take(howManyGames))
-                    {
-                        games.Add(
-                            new Game()
-                            {
-                                Id = game.Key,
-                                Name = game.Value.Name
-                            });
-                    }
+                    games.Add(
+                        new Game()
+                        {
+                            Id = game.Key,
+                            Name = game.Value.Name
+                        });
                 }
+            }
 
-                return games;
-            });
+            return games;
         }
     }
 }

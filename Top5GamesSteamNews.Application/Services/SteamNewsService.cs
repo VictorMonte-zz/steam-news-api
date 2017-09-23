@@ -23,22 +23,19 @@ namespace Top5GamesSteamNews.Application.Services
             _gamesServices = gamesService;
         }
 
-        public async Task<IEnumerable<News>> Get(int howManyArticles, int howManyGames)
+        public IEnumerable<News> Get(int howManyArticles, int howManyGames)
         {
-            return await Task.Run<IEnumerable<News>>(async () =>
-             {
-                 var list = new List<News>();
+            var list = new List<News>();
 
-                 var games = await _gamesServices.Get(howManyGames);
+            var games = _gamesServices.Get(howManyGames);
 
-                 foreach (var game in games)
-                 {
-                     var news = GetNewsForGame(game, howManyArticles);                     
-                     list.Add(news);
-                 }
+            foreach (var game in games)
+            {
+                var news = GetNewsForGame(game, howManyArticles);
+                list.Add(news);
+            }
 
-                 return list;
-             });
+            return list;
         }
 
         private News GetNewsForGame(Game game, int howManyArticles)

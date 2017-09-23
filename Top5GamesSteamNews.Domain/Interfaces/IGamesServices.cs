@@ -6,6 +6,6 @@ namespace Top5GamesSteamNews.Domain.Interfaces
 {
     public interface IGamesServices
     {
-        Task<IEnumerable<Game>> Get(int howManyGames);
+        IEnumerable<Game> Get(int howManyGames);
     }
 }
