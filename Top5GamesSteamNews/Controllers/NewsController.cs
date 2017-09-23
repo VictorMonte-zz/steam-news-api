@@ -5,6 +5,9 @@ namespace Top5GamesSteamNews.Controllers
 {
     public class NewsController : Controller
     {
+        private const int QTD_ARTICLES = 1;
+        private const int QTD_GAMES = 5;
+
         private INewsService _newsService;
 
         public NewsController(INewsService newsService)
@@ -14,7 +17,7 @@ namespace Top5GamesSteamNews.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.News = _newsService.Get(1, 5);
+            ViewBag.News = _newsService.Get(QTD_ARTICLES, QTD_GAMES);
 
             return View();
         }
