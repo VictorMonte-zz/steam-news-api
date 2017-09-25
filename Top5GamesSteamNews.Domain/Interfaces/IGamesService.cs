@@ -4,7 +4,7 @@ using Top5GamesSteamNews.Domain.Entities;
 
 namespace Top5GamesSteamNews.Domain.Interfaces
 {
-    public interface IGamesServices
+    public interface IGamesService
     {
         IEnumerable<Game> Get(int howManyGames);
     }

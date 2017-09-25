@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Top5GamesSteamNews.Application.Services
 {
-    public class SteamGamesService : IGamesServices
+    public class SteamGamesService : IGamesService
     {
         private Endpoints _endpoints;
 

@@ -35,7 +35,7 @@ namespace Top5GamesSteamNews
             // Add framework services.
             services.AddMvc();
 
-            services.AddTransient<IGamesServices, SteamGamesService>();
+            services.AddTransient<IGamesService, SteamGamesService>();
             services.AddTransient<INewsService, SteamNewsService>();
 
         }

@@ -15,9 +15,9 @@ namespace Top5GamesSteamNews.Application.Services
     public class SteamNewsService : INewsService
     {
         private Endpoints _endpoints;
-        private IGamesServices _gamesServices;
+        private IGamesService _gamesServices;
 
-        public SteamNewsService(IOptions<Endpoints> endpoints, IGamesServices gamesService)
+        public SteamNewsService(IOptions<Endpoints> endpoints, IGamesService gamesService)
         {
             _endpoints = endpoints.Value;
             _gamesServices = gamesService;
